@@ -12,6 +12,7 @@ import { AuthProvider } from './component/context/AuthContext'
 import Info from './component/Member/Info/info'
 import BoardList from './component/Board/BoardList'
 import BoardForm from './component/Board/BoardForm'
+import BoardDetail from './component/Board/BoardDetail'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -28,6 +29,7 @@ function App() {
           <Route path="/info" element={<Info/>}></Route>
           <Route path="/boards" element={<BoardList/>}></Route>
           <Route path="/boardForm" element={<BoardForm/>}></Route>
+          <Route path="/boards/:id" element={<BoardDetail/>}></Route>
         </Routes>
 
         <Footer/>

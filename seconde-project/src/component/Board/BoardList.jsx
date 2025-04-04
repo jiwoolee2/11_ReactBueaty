@@ -45,13 +45,13 @@ const BoardList = () => {
       <BoardOuter>
         <Button onClick={() => navi("/boardForm")}>새 글을 써보아용</Button>
         {boards.map((board) => (
-          <Board key="1" onClick={() => navi("/boards/1")}>
+          <Board key={board.boardNo} onClick={() => navi(`/boards/${board.boardNo}`)}>
             <BoardTitle>{board.boardTitle}</BoardTitle>
             <BoardWriter>{board.boardWriter}</BoardWriter>
             <CreateDate>{board.createDate}</CreateDate>
           </Board>
         ))}
-        { hasMore } && <Button onClick={hasMore}>더보기버튼이야용</Button>
+        { hasMore && <Button onClick={handleMore}>더보기버튼이야용</Button>}
       </BoardOuter>
     </Container>
   );
