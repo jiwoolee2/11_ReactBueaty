@@ -1,125 +1,48 @@
 import { useState } from "react";
+import DatePicker, { registerLocale } from "react-datepicker";
+import { ko } from "date-fns/locale";
+registerLocale("ko", ko);
+import "react-datepicker/dist/react-datepicker.css";
 
 const Test = () => {
-  // const [monday, setMonday] = useState([
-  //   { startTime: "09:00", endTime: "18:00" },
-  // ]);
-  // const [tuesday, setTuesday] = useState([
-  //   { startTime: "09:00", endTime: "18:00" },
-  // ]);
-  // const [wednesday, setWednesday] = useState([
-  //   { startTime: "09:00", endTime: "18:00" },
-  // ]);
-  // const [thursday, setThursday] = useState([
-  //   { startTime: "09:00", endTime: "18:00" },
-  // ]);
-  // const [friday, setFriday] = useState([
-  //   { startTime: "09:00", endTime: "18:00" },
-  // ]);
-  // const [saturday, setSaturday] = useState([
-  //   { startTime: "09:00", endTime: "18:00" },
-  // ]);
-  // const [sunday, setSunday] = useState([
-  //   { startTime: "09:00", endTime: "18:00" },
-  // ]);
+  const [selectedDateTime, setSelectedDateTime] = useState(new Date());
+  const [selectedDateTime2, setSelectedDateTime2] = useState(new Date());
 
-  const [resInfo, setResInfo] = useState({
-    monday: [{ startTime: "09:00", endTime: "18:00" }],
-    tuesday: [{ startTime: "09:00", endTime: "18:00" }],
-    wednesday: [{ startTime: "09:00", endTime: "18:00" }],
-    thursday: [{ startTime: "09:00", endTime: "18:00" }],
-    friday: [{ startTime: "09:00", endTime: "18:00" }],
-    saturday: [{ startTime: "09:00", endTime: "18:00" }],
-    sunday: [{ startTime: "09:00", endTime: "18:00" }],
-  });
-
-  // const weeklySchedules = [
-  //   monday,
-  //   tuesday,
-  //   wednesday,
-  //   thursday,
-  //   friday,
-  //   saturday,
-  //   sunday,
-  // ];
-  // const setWeeklySchedules = [
-  //   setMonday,
-  //   setTuesday,
-  //   setWednesday,
-  //   setThursday,
-  //   setFriday,
-  //   setSaturday,
-  //   setSunday,
-  // ];
-  // const dayLabels = [
-  //   "Monday",
-  //   "Tuesday",
-  //   "Wednesday",
-  //   "Thursday",
-  //   "Friday",
-  //   "Saturday",
-  //   "Sunday",
-  // ];
-
-  const addHandler = (dayIndex) => {
-    setWeeklySchedules[dayIndex]((prev) => [
-      ...prev,
-      { startTime: "09:00", endTime: "18:00" },
-    ]);
-  };
-
-  const deleteHandler = (dayIndex, timeIndex) => {
-    setWeeklySchedules[dayIndex]((prev) =>
-      prev.filter((_, i) => i !== timeIndex)
-    );
-  };
-
-  const handleStartTime = (e, dayIndex, timeIndex) => {
-    const newTime = e.target.value;
-    setWeeklySchedules[dayIndex]((prev) =>
-      prev.map((slot, i) =>
-        i === timeIndex ? { ...slot, startTime: newTime } : slot
-      )
-    );
-  };
-
-  const handleEndTime = (e, dayIndex, timeIndex) => {
-    const newTime = e.target.value;
-    setWeeklySchedules[dayIndex]((prev) =>
-      prev.map((slot, i) =>
-        i === timeIndex ? { ...slot, endTime: newTime } : slot
-      )
-    );
+  const handleTimeChange = (date) => {
+    if (date.getMinutes() % 10 === 0) {
+      setSelectedDateTime(date);
+    } else {
+      alert("10분 단위로만 선택할 수 있습니다.");
+    }
   };
 
   return (
     <>
       <h1>Weekly Schedule</h1>
-      <div>
-        {weeklySchedules.map((i, dayIndex) => (
-          <div key={dayIndex} style={{ marginBottom: "20px" }}>
-            <h3>{dayLabels[dayIndex]}</h3>
-            <button onClick={() => addHandler(dayIndex)}>추가하기</button>
-            {i.map((j, timeIndex) => (
-              <div key={timeIndex}>
-                <button onClick={() => deleteHandler(dayIndex, timeIndex)}>
-                  삭제
-                </button>
-                <input
-                  type="time"
-                  value={j.startTime}
-                  onChange={(e) => handleStartTime(e, dayIndex, timeIndex)}
-                />
-                <input
-                  type="time"
-                  value={j.endTime}
-                  onChange={(e) => handleEndTime(e, dayIndex, timeIndex)}
-                />
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
+
+      <DatePicker
+        selected={selectedDateTime}
+        onChange={handleTimeChange}
+        showTimeSelect
+        showTimeSelectOnly
+        timeIntervals={10}
+        timeCaption="Time"
+        dateFormat="HH:mm"
+        locale="ko"
+      />
+
+      <DatePicker
+        selected={selectedDateTime2}
+        onChange={(date) => setSelectedDateTime2(date)}
+        showTimeSelect
+        showTimeSelectOnly
+        timeIntervals={10}
+        timeCaption="Time"
+        dateFormat="HH:mm"
+        locale="ko"
+      />
+
+      <div>{selectedDateTime - selectedDateTime2}</div>
     </>
   );
 };
